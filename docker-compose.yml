@@ -1,0 +1,25 @@
+version: "3.8"
+networks:
+  # docker network create public
+  public:
+    external: true
+services:
+  redis:
+    image: redis
+    restart: unless-stopped
+    networks:
+      - default
+
+  app:
+    build: .
+    ports:
+      - 3000
+    networks:
+      - public
+      - default
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - 'traefik.http.routers.url_shortener.rule=Host("url-shortener.sps.mindfine.com")'
+      - "traefik.http.services.url_shortener.loadbalancer.server.port=3000"
+      - "traefik.http.routers.url_shortener.tls.certresolver=myresolver"
