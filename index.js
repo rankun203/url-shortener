@@ -17,7 +17,7 @@ redis.on("error", (error) => {
 
 const newUrl = async (longUrl) => {
   const id = nanoid();
-  await redis.set(`url:${id}`, longUrl, "EX", 3600);
+  await redis.set(`url:${id}`, longUrl, "EX", 60);
   return id;
 };
 
